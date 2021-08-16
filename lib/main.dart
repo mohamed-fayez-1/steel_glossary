@@ -49,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: SingleChildScrollView(
                           child: ListBody(
                             children: [
+                              Text('Source: AIST Steel Glossry'),
                               Text('Developer: Mohamed Fayez'),
                             ],
                           ),

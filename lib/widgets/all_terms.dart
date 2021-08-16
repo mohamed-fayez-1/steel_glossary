@@ -88,18 +88,10 @@ class _AlphapetWidgetsState extends State<AlphapetWidgets> {
                 child: Card(
                   child: InkWell(
                     onTap: () {
-                      if (letter.key == 'm' || letter.key == 'n') {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return AllTerms(listToDisplay: letter.value);
-                        }));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Only M and N work currently.'),
-                          ),
-                        );
-                      }
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return AllTerms(listToDisplay: letter.value);
+                      }));
                     },
                     child: Center(
                       child: Text(
