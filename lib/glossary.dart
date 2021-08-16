@@ -1,3 +1,68 @@
+import 'model/term.dart';
+
+Map<String, List<Term>> data = alphapet.map((key, value) {
+  return MapEntry(
+      key,
+      value
+          .map((e) =>
+              Term(term: '${e['term']}', definition: '${e['definition']}'))
+          .toList());
+});
+
+const Map<String, List<Map<String, String>>> alphapet = {
+  'a': a,
+  'b': b,
+  'c': c,
+  'd': d,
+  'e': e,
+  'f': f,
+  'g': g,
+  'h': h,
+  'i': i,
+  'j': j,
+  'k': k,
+  'l': l,
+  'm': glossary,
+  'n': n,
+  'o': o,
+  'p': p,
+  'q': q,
+  'r': r,
+  's': s,
+  't': t,
+  'u': u,
+  'v': v,
+  'w': w,
+  'x': x,
+  'y': y,
+  'z': z,
+};
+const List<Map<String, String>> a = [];
+const List<Map<String, String>> b = [];
+const List<Map<String, String>> c = [];
+const List<Map<String, String>> d = [];
+const List<Map<String, String>> e = [];
+const List<Map<String, String>> f = [];
+const List<Map<String, String>> g = [];
+const List<Map<String, String>> h = [];
+const List<Map<String, String>> i = [];
+const List<Map<String, String>> j = [];
+const List<Map<String, String>> k = [];
+const List<Map<String, String>> l = [];
+
+const List<Map<String, String>> o = [];
+const List<Map<String, String>> p = [];
+const List<Map<String, String>> q = [];
+const List<Map<String, String>> r = [];
+const List<Map<String, String>> s = [];
+const List<Map<String, String>> t = [];
+const List<Map<String, String>> u = [];
+const List<Map<String, String>> v = [];
+const List<Map<String, String>> w = [];
+const List<Map<String, String>> x = [];
+const List<Map<String, String>> y = [];
+const List<Map<String, String>> z = [];
+
 const List<Map<String, String>> glossary = [
   {
     'term': 'M Sections (Bantam BeamsTM, Junior BeamsTM)',
@@ -1666,6 +1731,8 @@ const List<Map<String, String>> glossary = [
     'term': 'M-value',
     'definition': 'See strain-rate sensitivity (see Strain-rate Sensitivity)'
   },
+];
+const List<Map<String, String>> n = [
   {'term': 'N', 'definition': 'Chemical symbol for nitrogen.'},
   {'term': 'Na', 'definition': 'Chemical symbol for sodium.'},
   {

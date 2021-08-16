@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../model/term.dart';
+import '../glossary.dart';
+import '/model/term.dart';
 import 'favorites_page.dart';
 
-List<Term> data = terms;
-
 class AllTerms extends StatefulWidget {
-  const AllTerms({Key? key}) : super(key: key);
+  const AllTerms({Key? key, required this.listToDisplay}) : super(key: key);
+  final List<Term> listToDisplay;
 
   @override
   _AllTermsState createState() => _AllTermsState();
@@ -15,46 +15,102 @@ class AllTerms extends StatefulWidget {
 class _AllTermsState extends State<AllTerms> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ExpansionPanelList(
-        expansionCallback: (int index, bool isExpanded) {
-          setState(() {
-            data[index].isExpanded = !isExpanded;
-          });
-        },
-        children: data.map<ExpansionPanel>((content) {
-          return ExpansionPanel(
-            headerBuilder: (context, isExpanded) {
-              return ListTile(
-                title: Text(content.term),
-              );
-            },
-            body: ListTile(
-              title: Text(content.definition),
-              trailing: content.isFavorite
-                  ? IconButton(
-                      icon: Icon(Icons.favorite),
-                      onPressed: () {
-                        content.isFavorite = false;
-                        setState(() {
-                          favoritesList.remove(content);
-                        });
-                      },
-                    )
-                  : IconButton(
-                      icon: Icon(Icons.favorite_outline),
-                      onPressed: () {
-                        content.isFavorite = true;
-                        setState(() {
-                          favoritesList.add(content);
-                        });
-                      },
-                    ),
-            ),
-            isExpanded: content.isExpanded,
-          );
-        }).toList(),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Steel Glossary'),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back)),
+        ),
+        body: ListView.builder(
+          itemCount: widget.listToDisplay.length,
+          itemBuilder: (context, index) {
+            return ExpansionTile(
+              title: Text(widget.listToDisplay[index].term),
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(widget.listToDisplay[index].definition)),
+                      widget.listToDisplay[index].isFavorite
+                          ? IconButton(
+                              icon: Icon(Icons.favorite),
+                              onPressed: () {
+                                widget.listToDisplay[index].isFavorite = false;
+                                setState(() {
+                                  favoritesList
+                                      .remove(widget.listToDisplay[index]);
+                                });
+                              },
+                            )
+                          : IconButton(
+                              icon: Icon(Icons.favorite_outline),
+                              onPressed: () {
+                                widget.listToDisplay[index].isFavorite = true;
+                                setState(() {
+                                  favoritesList
+                                      .add(widget.listToDisplay[index]);
+                                });
+                              },
+                            ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
+    );
+  }
+}
+
+class AlphapetWidgets extends StatefulWidget {
+  const AlphapetWidgets({Key? key}) : super(key: key);
+
+  @override
+  _AlphapetWidgetsState createState() => _AlphapetWidgetsState();
+}
+
+class _AlphapetWidgetsState extends State<AlphapetWidgets> {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 4,
+      children: data.entries
+          .map((letter) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      if (letter.key == 'm' || letter.key == 'n') {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return AllTerms(listToDisplay: letter.value);
+                        }));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Only M and N work currently.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Center(
+                      child: Text(
+                        letter.key.toString().toUpperCase(),
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                  ),
+                ),
+              ))
+          .toList(),
     );
   }
 }

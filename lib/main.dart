@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'model/term.dart';
 import 'widgets/all_terms.dart';
 import 'widgets/search_page.dart';
 import 'widgets/favorites_page.dart';
-
-List<Term> data = terms;
 
 void main() {
   runApp(MyApp());
@@ -41,8 +38,33 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('Steel Glossary'),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.sort),
+            icon: Icon(Icons.code),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Steel Glossary'),
+                      content: Container(
+                        child: SingleChildScrollView(
+                          child: ListBody(
+                            children: [
+                              Text('Developer: Mohamed Fayez'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('OK'),
+                        )
+                      ],
+                    );
+                  });
+            },
           ),
         ],
       ),
@@ -55,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    appBody = AllTerms();
+                    appBody = AlphapetWidgets();
                   });
                 },
                 icon: Icon(Icons.list)),

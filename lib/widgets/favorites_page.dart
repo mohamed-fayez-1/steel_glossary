@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/model/term.dart';
 
 List<Term> favoritesList = [];
+// TODO: favorites needs to be saved locally.
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);

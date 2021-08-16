@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '/glossary.dart';
 import '../model/term.dart';
 import 'favorites_page.dart';
-
-List<Term> data = terms;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -12,47 +11,71 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-// TODO: Implement the search in the defenition itself.
 class _SearchPageState extends State<SearchPage> {
   bool isSearching = false;
   List<Term> searchResults = [];
+  bool includeDef = false;
+  String searchPhrase = '';
+  void search(String whatToSearch) {
+    setState(() {
+      if (whatToSearch.isNotEmpty) {
+        searchResults.clear();
+        for (List<Term> letter in data.values) {
+          for (int i = 0; i < letter.length; i++) {
+            if (letter[i]
+                    .term
+                    .toLowerCase()
+                    .contains(whatToSearch.toLowerCase()) ||
+                (includeDef &&
+                    letter[i]
+                        .definition
+                        .toLowerCase()
+                        .contains(whatToSearch.toLowerCase()))) {
+              searchResults.add(letter[i]);
+            }
+          }
+        }
+      } else {
+        searchResults.clear();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.all(10),
-          child: TextField(
-            onChanged: (value) {
-              setState(() {
-                if (value.isNotEmpty) {
-                  searchResults.clear();
-                  for (int i = 0; i < data.length; i++) {
-                    if (data[i]
-                        .term
-                        .toLowerCase()
-                        .contains(value.toLowerCase())) {
-                      searchResults.add(data[i]);
-                    }
-                  }
-                } else {
-                  searchResults.clear();
-                }
-              });
-            },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  // TODO: I think this part is not working. Check it later.
-                  width: 0,
-                  color: Colors.white,
+          child: Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  searchPhrase = value;
+                  search(value);
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  filled: true,
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Search',
                 ),
               ),
-              fillColor: Colors.white,
-              filled: true,
-              prefixIcon: Icon(Icons.search),
-              hintText: 'Search',
-            ),
+              Row(
+                children: [
+                  FilterChip(
+                      label: Text('Include Definitions'),
+                      selected: includeDef,
+                      onSelected: (value) {
+                        setState(() {
+                          includeDef = !includeDef;
+                          search(searchPhrase);
+                        });
+                      })
+                ],
+              )
+            ],
           ),
         ),
         Expanded(
