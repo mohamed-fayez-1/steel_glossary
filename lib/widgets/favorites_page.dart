@@ -15,57 +15,63 @@ class FavoritesPage extends StatefulWidget {
 class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: favoritesList
-          .map((element) => Card(
-                margin: EdgeInsets.all(8),
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return favoritesList.isEmpty
+        ? Center(
+            child: Text('Your favorite terms will be here.'),
+          )
+        : ListView(
+            children: favoritesList
+                .map((element) => Card(
+                      margin: EdgeInsets.all(8),
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              element.term,
-                              style: Theme.of(context).textTheme.headline6,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    element.term,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(
+                                    element.definition,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              height: 6,
-                            ),
-                            Text(
-                              element.definition,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
+                            element.isFavorite
+                                ? IconButton(
+                                    icon: Icon(Icons.favorite),
+                                    onPressed: () {
+                                      element.isFavorite = false;
+                                      setState(() {
+                                        favoritesList.remove(element);
+                                      });
+                                    },
+                                  )
+                                : IconButton(
+                                    icon: Icon(Icons.favorite_outline),
+                                    onPressed: () {
+                                      element.isFavorite = true;
+                                      setState(() {
+                                        favoritesList.add(element);
+                                      });
+                                    },
+                                  ),
                           ],
                         ),
                       ),
-                      element.isFavorite
-                          ? IconButton(
-                              icon: Icon(Icons.favorite),
-                              onPressed: () {
-                                element.isFavorite = false;
-                                setState(() {
-                                  favoritesList.remove(element);
-                                });
-                              },
-                            )
-                          : IconButton(
-                              icon: Icon(Icons.favorite_outline),
-                              onPressed: () {
-                                element.isFavorite = true;
-                                setState(() {
-                                  favoritesList.add(element);
-                                });
-                              },
-                            ),
-                    ],
-                  ),
-                ),
-              ))
-          .toList(),
-    );
+                    ))
+                .toList(),
+          );
   }
 }

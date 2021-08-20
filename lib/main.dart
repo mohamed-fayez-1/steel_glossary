@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'widgets/all_terms.dart';
 import 'widgets/search_page.dart';
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
       title: 'Steel Glossary',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
       home: MyHomePage(),
     );
@@ -30,15 +34,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Widget appBody = SearchPage();
+  String appBarTitle = 'Steel Glossary';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Steel Glossary'),
+        title: Text(appBarTitle),
         actions: [
           IconButton(
-            icon: Icon(Icons.code),
+            icon: Icon(Icons.info_outline),
             onPressed: () {
               showDialog(
                   context: context,
@@ -49,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: SingleChildScrollView(
                           child: ListBody(
                             children: [
-                              Text('Source: AIST Steel Glossry'),
+                              Text('Source: AIST Steel Glossary'),
                               Text('Developer: Mohamed Fayez'),
                             ],
                           ),
@@ -76,15 +81,19 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
+                tooltip: 'All Terms',
                 onPressed: () {
                   setState(() {
+                    appBarTitle = 'All Terms';
                     appBody = AlphapetWidgets();
                   });
                 },
                 icon: Icon(Icons.list)),
             IconButton(
+                tooltip: 'Favorites',
                 onPressed: () {
                   setState(() {
+                    appBarTitle = 'Favorites';
                     appBody = FavoritesPage();
                   });
                 },
@@ -93,8 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Search',
         onPressed: () {
           setState(() {
+            appBarTitle = 'Steel Glossary';
             appBody = SearchPage();
           });
         },

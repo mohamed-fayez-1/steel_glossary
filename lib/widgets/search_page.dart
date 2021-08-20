@@ -12,7 +12,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  bool isSearching = false;
+  // bool isSearching = false;
   List<Term> searchResults = [];
   bool includeDef = false;
   String searchPhrase = '';
@@ -78,37 +78,41 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
-        Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(searchResults[index].term),
-                subtitle: Text(searchResults[index].definition),
-                trailing: searchResults[index].isFavorite
-                    ? IconButton(
-                        icon: Icon(Icons.favorite),
-                        onPressed: () {
-                          searchResults[index].isFavorite = false;
-                          setState(() {
-                            favoritesList.remove(searchResults[index]);
-                          });
-                        },
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.favorite_outline),
-                        onPressed: () {
-                          searchResults[index].isFavorite = true;
-                          setState(() {
-                            favoritesList.add(searchResults[index]);
-                          });
-                        },
-                      ),
-              );
-            },
-            itemCount: searchResults.length,
-            shrinkWrap: true,
-          ),
-        )
+        searchPhrase.isEmpty
+            ? Center(
+                child: Text('Search results will appear here.'),
+              )
+            : Expanded(
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(searchResults[index].term),
+                      subtitle: Text(searchResults[index].definition),
+                      trailing: searchResults[index].isFavorite
+                          ? IconButton(
+                              icon: Icon(Icons.favorite),
+                              onPressed: () {
+                                searchResults[index].isFavorite = false;
+                                setState(() {
+                                  favoritesList.remove(searchResults[index]);
+                                });
+                              },
+                            )
+                          : IconButton(
+                              icon: Icon(Icons.favorite_outline),
+                              onPressed: () {
+                                searchResults[index].isFavorite = true;
+                                setState(() {
+                                  favoritesList.add(searchResults[index]);
+                                });
+                              },
+                            ),
+                    );
+                  },
+                  itemCount: searchResults.length,
+                  shrinkWrap: true,
+                ),
+              )
       ],
     );
   }
