@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:html';
 
 import '/glossary.dart';
 import '../model/term.dart';
@@ -92,6 +93,8 @@ class _SearchPageState extends State<SearchPage> {
                           ? IconButton(
                               icon: Icon(Icons.favorite),
                               onPressed: () {
+                                window.localStorage
+                                    .remove(searchResults[index].term);
                                 searchResults[index].isFavorite = false;
                                 setState(() {
                                   favoritesList.remove(searchResults[index]);
@@ -101,6 +104,8 @@ class _SearchPageState extends State<SearchPage> {
                           : IconButton(
                               icon: Icon(Icons.favorite_outline),
                               onPressed: () {
+                                window.localStorage[searchResults[index].term] =
+                                    searchResults[index].term;
                                 searchResults[index].isFavorite = true;
                                 setState(() {
                                   favoritesList.add(searchResults[index]);

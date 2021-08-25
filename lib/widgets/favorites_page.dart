@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import '/model/term.dart';
@@ -48,25 +50,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 ],
                               ),
                             ),
-                            element.isFavorite
-                                ? IconButton(
-                                    icon: Icon(Icons.favorite),
-                                    onPressed: () {
-                                      element.isFavorite = false;
-                                      setState(() {
-                                        favoritesList.remove(element);
-                                      });
-                                    },
-                                  )
-                                : IconButton(
-                                    icon: Icon(Icons.favorite_outline),
-                                    onPressed: () {
-                                      element.isFavorite = true;
-                                      setState(() {
-                                        favoritesList.add(element);
-                                      });
-                                    },
-                                  ),
+                            IconButton(
+                              icon: Icon(Icons.favorite),
+                              onPressed: () {
+                                window.localStorage.remove(element.term);
+                                element.isFavorite = false;
+                                setState(() {
+                                  favoritesList.remove(element);
+                                });
+                              },
+                            ),
                           ],
                         ),
                       ),

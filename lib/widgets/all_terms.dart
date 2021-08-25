@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import '../glossary.dart';
@@ -15,56 +17,57 @@ class AllTerms extends StatefulWidget {
 class _AllTermsState extends State<AllTerms> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Steel Glossary'),
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back)),
-        ),
-        body: ListView.builder(
-          itemCount: widget.listToDisplay.length,
-          itemBuilder: (context, index) {
-            return ExpansionTile(
-              title: Text(widget.listToDisplay[index].term),
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(widget.listToDisplay[index].definition)),
-                      widget.listToDisplay[index].isFavorite
-                          ? IconButton(
-                              icon: Icon(Icons.favorite),
-                              onPressed: () {
-                                widget.listToDisplay[index].isFavorite = false;
-                                setState(() {
-                                  favoritesList
-                                      .remove(widget.listToDisplay[index]);
-                                });
-                              },
-                            )
-                          : IconButton(
-                              icon: Icon(Icons.favorite_outline),
-                              onPressed: () {
-                                widget.listToDisplay[index].isFavorite = true;
-                                setState(() {
-                                  favoritesList
-                                      .add(widget.listToDisplay[index]);
-                                });
-                              },
-                            ),
-                    ],
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Steel Glossary'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back)),
+      ),
+      body: ListView.builder(
+        itemCount: widget.listToDisplay.length,
+        itemBuilder: (context, index) {
+          return ExpansionTile(
+            title: Text(widget.listToDisplay[index].term),
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(widget.listToDisplay[index].definition)),
+                    widget.listToDisplay[index].isFavorite
+                        ? IconButton(
+                            icon: Icon(Icons.favorite),
+                            onPressed: () {
+                              window.localStorage
+                                  .remove(widget.listToDisplay[index].term);
+                              widget.listToDisplay[index].isFavorite = false;
+                              setState(() {
+                                favoritesList
+                                    .remove(widget.listToDisplay[index]);
+                              });
+                            },
+                          )
+                        : IconButton(
+                            icon: Icon(Icons.favorite_outline),
+                            onPressed: () {
+                              window.localStorage[widget.listToDisplay[index]
+                                  .term] = widget.listToDisplay[index].term;
+                              widget.listToDisplay[index].isFavorite = true;
+                              setState(() {
+                                favoritesList.add(widget.listToDisplay[index]);
+                              });
+                            },
+                          ),
+                  ],
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
